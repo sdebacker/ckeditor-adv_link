@@ -6,7 +6,7 @@
 'use strict';
 
 (function() {
-    CKEDITOR.plugins.add('link', {
+    CKEDITOR.plugins.add('adv_link', {
         requires: 'dialog,fakeobjects',
         // jscs:disable maximumLineLength
         lang:
@@ -497,7 +497,7 @@
          */
         parseLinkAttributes: function(editor, element) {
             var href = (element && (element.data('cke-saved-href') || element.getAttribute('href'))) || '',
-                compiledProtectionFunction = editor.plugins.link.compiledProtectionFunction,
+                compiledProtectionFunction = editor.plugins.adv_link.compiledProtectionFunction,
                 emailProtection = editor.config.emailProtection,
                 retval = {},
                 javascriptMatch = href.match(javascriptProtocolRegex),
