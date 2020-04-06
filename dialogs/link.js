@@ -418,7 +418,7 @@
                                     type: 'select',
                                     label: advLinkLang.selectPageLabel,
                                     id: 'localPage',
-                                    items: [['', '']],
+                                    items: [],
                                     setup: function(data) {
                                         var self = this;
                                         $.get('/pages.php', function(items) {
