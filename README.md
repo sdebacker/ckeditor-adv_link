@@ -25,7 +25,7 @@ CKEDITOR.editorConfig = function(config) {
 };
 ```
 
-3. In `dialogs/links.js` file, find '/pages.php' and set the URL of the page which generates inputs to populate the plugin. A sample PHP script is given in `sample` folder and can be a good start.
+3. In `dialogs/links.js` file, find `/pages.php` and set the URL of the page which generates inputs to populate the plugin. A sample PHP script is given in `sample` folder and can be a good start.
 
 4. Test your installation by using the plugin.
 
