@@ -27,11 +27,7 @@ CKEDITOR.editorConfig = function(config) {
 
 3. In `dialogs/links.js` file, find `/pages.php` and set the URL of the page which generates inputs to populate the plugin. A sample PHP script is given in `sample` folder and can be a good start.
 
-4. Test your installation by using the plugin.
-
-5. It should be working, adapt your script to get the rights inputs.
-
-6. If it does not work, use javascript debugging tool.
+4. Test your installation by using the plugin, if it does not work, use javascript debugging tool.
 
 ## Internationalization
 
