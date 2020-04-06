@@ -6,7 +6,7 @@ Tested with CKEditor 4.14.
 
 ## Disclaimer
 
-I developed this script for my needs, it is inspired by this [repository](https://github.com/simogeo/ckeditor-adv_link) and this [blog post](http://blog.xoundboy.com/?p=393). I want people to be able to use it but I don't pretend to do any support regarding installation or use.
+I developed this script for my needs, it is inspired by this [repository](https://github.com/simogeo/ckeditor-adv_link) and this [blog post](http://blog.xoundboy.com/?p=393).
 
 ## How to install it ?
 
