@@ -153,7 +153,7 @@
         // Handles the event when the "Type" selection box is changed.
         var linkTypeChanged = function() {
             var dialog = this.getDialog(),
-                partIds = ['urlOptions', 'anchorOptions', 'emailOptions', 'telOptions'],
+                partIds = ['urlOptions', 'localPageOptions', 'anchorOptions', 'emailOptions', 'telOptions'],
                 typeValue = this.getValue(),
                 uploadTab = dialog.definition.getContents('upload'),
                 uploadInitiallyHidden = uploadTab && uploadTab.hidden;
@@ -224,6 +224,7 @@
 
         var commonLang = editor.lang.common,
             linkLang = editor.lang.link,
+            advLinkLang = editor.lang.adv_link,
             anchors;
 
         return {
@@ -266,6 +267,7 @@
                             default: 'url',
                             items: [
                                 [linkLang.toUrl, 'url'],
+                                [advLinkLang.localPage, 'localPage'],
                                 [linkLang.toAnchor, 'anchor'],
                                 [linkLang.toEmail, 'email'],
                                 [linkLang.toPhone, 'tel'],
@@ -405,6 +407,37 @@
                                     hidden: 'true',
                                     filebrowser: 'info:url',
                                     label: commonLang.browseServer,
+                                },
+                            ],
+                        },
+                        {
+                            type: 'vbox',
+                            id: 'localPageOptions',
+                            children: [
+                                {
+                                    type: 'select',
+                                    label: advLinkLang.selectPageLabel,
+                                    id: 'localPage',
+                                    items: [['', '']],
+                                    setup: function(data) {
+                                        var self = this;
+                                        $.get('/pages.php', function(items) {
+                                            items.forEach(function(item) {
+                                                self.add(item[0], item[1]);
+                                            });
+                                            if (data.localPage) {
+                                                self.setValue(data.localPage || '');
+                                            }
+                                        }).fail(function() {
+                                            alert('An error occurred while getting the pages.');
+                                        });
+                                    },
+                                    commit: function(data) {
+                                        if (!data.localPage) {
+                                            data.localPage = {};
+                                        }
+                                        data.localPage = this.getValue();
+                                    },
                                 },
                             ],
                         },
@@ -1088,6 +1121,16 @@
                 // Record down the selected element in the dialog.
                 this._.selectedElements = elements;
 
+                if (
+                    data.type == 'url' &&
+                    data.url.protocol == undefined &&
+                    data.url.url.match(/{!! page:[0-9]+ !!}/g)
+                ) {
+                    data.type = 'localPage';
+                    data.localPage = data.url.url;
+                    delete data.url;
+                }
+
                 this.setupContent(data);
             },
             onOk: function() {
@@ -1095,6 +1138,13 @@
 
                 // Collect data from fields.
                 this.commitContent(data);
+
+                if (data.type == 'localPage' && data.localPage.match(/{!! page:[0-9]+ !!}/g)) {
+                    data.type = 'url';
+                    data.url.protocol = '';
+                    data.url.url = data.localPage;
+                    delete data.localPage;
+                }
 
                 if (!this._.selectedElements.length) {
                     insertLinksIntoSelection(editor, data);
