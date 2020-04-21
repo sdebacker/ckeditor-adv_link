@@ -8,6 +8,7 @@
 (function() {
     CKEDITOR.dialog.add('link', function(editor) {
         var plugin = CKEDITOR.plugins.link,
+            localPageHrefPattern = new RegExp('{!! page:[0-9]+ !!}'),
             initialLinkText;
 
         function createRangeForLink(editor, link) {
@@ -1121,11 +1122,7 @@
                 // Record down the selected element in the dialog.
                 this._.selectedElements = elements;
 
-                if (
-                    data.type == 'url' &&
-                    data.url.protocol == undefined &&
-                    data.url.url.match(/{!! page:[0-9]+ !!}/g)
-                ) {
+                if (data.type == 'url' && data.url.protocol == undefined && localPageHrefPattern.test(data.url.url)) {
                     data.type = 'localPage';
                     data.localPage = data.url.url;
                     delete data.url;
@@ -1139,7 +1136,7 @@
                 // Collect data from fields.
                 this.commitContent(data);
 
-                if (data.type == 'localPage' && data.localPage.match(/{!! page:[0-9]+ !!}/g)) {
+                if (data.type == 'localPage' && localPageHrefPattern.test(data.localPage.href)) {
                     data.type = 'url';
                     data.url.protocol = '';
                     data.url.url = data.localPage;
